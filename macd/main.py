@@ -89,9 +89,7 @@ def main() -> None:
       plt.grid(True)
       plt.show()
 
-
-      
-      
+   
 
 
 
