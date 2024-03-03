@@ -6,7 +6,7 @@ import pandas as pd
 def ema(periods : int, dataset : pd.DataFrame, start: int) -> float:
 
       start = start - periods
-
+      
       alpha = 2 / (periods + 1)
 
       denominator = sum((1 - alpha) ** i for i in range(periods))
