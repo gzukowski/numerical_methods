@@ -11,24 +11,32 @@ BUY = 1
 SELL = 0
 
 
-def simulate_investment(intersection_points : list, dataset_display: pd.DataFrame) -> float:
+def simulate_investment(intersection_points: list, dataset_display: pd.DataFrame) -> float:
       balance = INITIAL_BALANCE
       coins = 0
 
       for point in intersection_points:
-            _, price, state = point
-            coins_to_buy = balance / price
-            if balance < 0:
-                  return balance
-            
+            index, _, state = point
+            price = dataset_display["close"][index]
+
             if state == BUY:
+                  coins_to_buy = balance / price
                   balance -= coins_to_buy * price
                   coins += coins_to_buy
-            else:
+                  print(f"Buying {coins_to_buy:.8f} coins at ${price:.2f} each. Balance: ${balance:.2f}")
+            elif state == SELL:
                   balance += coins * price
+                  print(f"Selling {coins:.8f} coins at ${price:.2f} each. Balance: ${balance:.2f}")
                   coins = 0
+
+      if coins > 0:
+            balance += coins * dataset_display["close"].iloc[-1]
+            print(f"Selling remaining {coins:.8f} coins at ${dataset_display['close'].iloc[-1]:.2f} each. Balance: ${balance:.2f}")
+
       return balance
-    
+
+
+
 
 
 
@@ -58,6 +66,9 @@ def main() -> None:
                   sell_points.append((dataset_display.index[i], dataset_display["close"].iloc[i]))
                   intersection_points.append((dataset_display.index[i], macd_values[i], SELL))
 
+      final_balance = simulate_investment(intersection_points, dataset_display)
+      print("Final balance after simulation:", final_balance)
+
       for point in buy_points:
             plt.scatter(point[0], point[1], color='green', marker='^', s=50, zorder=3)
 
@@ -79,10 +90,11 @@ def main() -> None:
       plt.show()
 
 
-      final_balance = simulate_investment(intersection_points, dataset_display)
-      print("Final balance after simulation:", final_balance)
+      
+      
 
 
 
 if __name__ == "__main__":
       main()
+
