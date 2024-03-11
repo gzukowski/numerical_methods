@@ -5,8 +5,8 @@ import pandas as pd
 
 
 
-FILENAME = "BTC-DAILY.csv"
-INITIAL_BALANCE = 10000  # Initial balance for simulation
+FILENAME = "xauusd_d.csv"
+INITIAL_BALANCE = 10000
 BUY = 1
 SELL = 0
 
@@ -42,9 +42,13 @@ def simulate_investment(intersection_points: list, dataset_display: pd.DataFrame
 
 def main() -> None:
 
+      
       dataset = read_csv(filename=FILENAME)
 
+      
+
       dataset_display = dataset.tail(1000)
+      print(dataset_display)
 
       macd_values = macd(dataset["close"])
       signal_values = signal(macd_values)
@@ -81,9 +85,94 @@ def main() -> None:
 
 
 
-      plt.plot(dataset_display.index, dataset_display["close"], label='BTC', color='yellow', zorder=2)
+      plt.plot(dataset_display.index, dataset_display["close"], label='AU', color='yellow', zorder=2)
       plt.title('MACD and Signal Line')
-      plt.xlabel('Date')
+      plt.xlabel('Day')
+      plt.ylabel('Value')
+      plt.legend()
+      plt.grid(True)
+      plt.show()
+
+
+
+
+      # drugi wykres
+
+      plt.figure(figsize=(10, 6))
+      plt.plot(dataset_display.index[:500], macd_values[:500], label='MACD', color='blue')
+      plt.plot(dataset_display.index[:500], signal_values[:500], label='Signal Line', color='red')
+
+
+      buy_points = []
+      sell_points = []
+      intersection_points = []
+      for i in range(1, len(macd_values)//2):
+            if macd_values[i] > signal_values[i] and macd_values[i - 1] <= signal_values[i - 1]:
+                  buy_points.append((dataset_display.index[i], dataset_display["close"].iloc[i]))
+                  intersection_points.append((dataset_display.index[i], macd_values[i], BUY))
+            elif macd_values[i] < signal_values[i] and macd_values[i - 1] >= signal_values[i - 1]:
+                  sell_points.append((dataset_display.index[i], dataset_display["close"].iloc[i]))
+                  intersection_points.append((dataset_display.index[i], macd_values[i], SELL))
+
+
+
+      for point in buy_points:
+            plt.scatter(point[0], point[1], color='green', marker='^', s=50, zorder=3)
+
+      for point in sell_points:
+            plt.scatter(point[0], point[1], color='black', marker='v', s=50, zorder=3)
+
+      for point, value, _ in intersection_points:
+            plt.scatter(point, value, color='orange', marker='o', s=50, zorder=3)
+
+
+
+
+      plt.plot(dataset_display.index[:500], dataset_display["close"][:500], label='AU', color='yellow', zorder=2)
+      plt.title('MACD and Signal Line')
+      plt.xlabel('Day')
+      plt.ylabel('Value')
+      plt.legend()
+      plt.grid(True)
+      plt.show()
+
+
+
+      # trzeci
+
+      plt.figure(figsize=(10, 6))
+      plt.plot(dataset_display.index[:100], macd_values[:100], label='MACD', color='blue')
+      plt.plot(dataset_display.index[:100], signal_values[:100], label='Signal Line', color='red')
+
+
+      buy_points = []
+      sell_points = []
+      intersection_points = []
+      for i in range(1, len(macd_values)//10):
+            if macd_values[i] > signal_values[i] and macd_values[i - 1] <= signal_values[i - 1]:
+                  buy_points.append((dataset_display.index[i], dataset_display["close"].iloc[i]))
+                  intersection_points.append((dataset_display.index[i], macd_values[i], BUY))
+            elif macd_values[i] < signal_values[i] and macd_values[i - 1] >= signal_values[i - 1]:
+                  sell_points.append((dataset_display.index[i], dataset_display["close"].iloc[i]))
+                  intersection_points.append((dataset_display.index[i], macd_values[i], SELL))
+
+
+
+      for point in buy_points:
+            plt.scatter(point[0], point[1], color='green', marker='^', s=50, zorder=3)
+
+      for point in sell_points:
+            plt.scatter(point[0], point[1], color='black', marker='v', s=50, zorder=3)
+
+      for point, value, _ in intersection_points:
+            plt.scatter(point, value, color='orange', marker='o', s=50, zorder=3)
+
+
+
+
+      plt.plot(dataset_display.index[:100], dataset_display["close"][:100], label='AU', color='yellow', zorder=2)
+      plt.title('MACD and Signal Line')
+      plt.xlabel('Day')
       plt.ylabel('Value')
       plt.legend()
       plt.grid(True)
