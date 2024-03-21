@@ -1,0 +1,31 @@
+
+
+Jacobi:
+
+time = 2.2228
+
+error = 1.2686e+308
+
+i =  617
+
+
+gauss:
+
+time = 174.9660
+
+ error =  6.4367e+10
+
+i =  1000
+
+
+
+Direct:
+
+time = 0.2971
+
+   7.0636e-13
+
+
+Metody Jacobiego i gaussa nie osiągają zadowalającego wyniku, obie nie zbiegają się a błąd dla metody gaussa osiąga wartośc Nan.
+
+

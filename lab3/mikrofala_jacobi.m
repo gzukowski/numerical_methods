@@ -33,7 +33,7 @@ bm = inv(D) * b;
 
 
 tic();
-
+last_error = 0;
 iterations = 0;
 for iteration = 1:MAX_ITERATIONS
 
@@ -43,11 +43,17 @@ x = M*x + bm;
 err_norm = norm(A*x-b);
 
 iterations = iterations +1;
+
+if isnan(err_norm) || isinf(err_norm)
+        err_norm = last_error;
+        break;
+end        
+
 if err_norm < DESIRED_ERROR
         %disp(err_norm);
         break; 
 end
-
+last_error = err_norm;
 disp(err_norm);
 
 end

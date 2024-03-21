@@ -29,15 +29,26 @@ iterations = 0;
 
 tic();
 
+
+last_error = 0;
 for iteration = 1:MAX_ITERATIONS
 
     x = M*x + bm;
     err_norm = norm(A*x - b);
     iterations = iterations + 1;
-    if err_norm < DESIRED_ERROR
-            break;
+    
+
+    if isnan(err_norm)
+        err_norm = last_error;
+        break;
+
     end
 
+    if err_norm < DESIRED_ERROR
+            
+            break;
+    end
+    last_error = err_norm;
     disp(err_norm);
 end
 
