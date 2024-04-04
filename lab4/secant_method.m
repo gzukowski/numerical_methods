@@ -13,17 +13,40 @@ function [xsolution,ysolution,iterations,xtab,xdif] = secant_method(a,b,max_iter
 
 xsolution = [];
 ysolution = [];
-xtab = [];
 xdif = [];
+
+xtab = [a, b];
+
+
 
 
     for iterations = 1:max_iterations
+        
+        fxk = fun(xtab(end));
+        fxk_1 = fun(xtab(end-1));
+        xsolution =  xtab(end) - fxk * ( xtab(end) - xtab(end-1) ) / (fxk - fxk_1);
 
+        
+        xtab = [xtab, xsolution];
+        xdif = [xdif, abs(xtab(end) - xtab(end-1))];
+        
+        if abs(fun(xsolution)) < ytolerance
+            xsolution = xsolution;
+            ysolution = fun(xsolution);
+            break;
+        end
+
+        
+
+        %xtab
         
     
     
     end
-
+xtab = xtab(3:end);
+xdif = xdif(2:end);
+xtab = xtab';
+xdif = xdif';
 
 
 end

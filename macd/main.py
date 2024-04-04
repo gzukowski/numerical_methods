@@ -27,8 +27,6 @@ def main() -> None:
 
       final_balance = simulate_investment_rsi(intersection_points, dataset_display)
       print("Final balance after simulation:", final_balance)
-
-
       
       # wykres 1000 dni
       display_chart(macd_values, signal_values, dataset_display, buy_points, sell_points, intersection_points, LABEL)

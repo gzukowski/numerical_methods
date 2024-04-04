@@ -1,0 +1,12 @@
+6.0:
+x1 = 6.283185307179586
+Szczegóły działania funkcji fzero:
+Zero found in the interval [5.66059, 6.33941]
+
+4.5:
+x2 = 4.712388980384688
+Szczegóły działania funkcji fzero:
+Current point x may be near a singular point. The interval [4.24544, 4.75456] 
+reduced to the requested tolerance and the function changes sign in the interval,
+but f(x) increased in magnitude as the interval reduced.
+
