@@ -3,6 +3,9 @@ from matrix import Matrix
 from typing import List
 import time
 import matplotlib.pyplot as plt
+import copy
+import numpy as np
+import scipy.linalg as la
 
 
 INDEX = 193184
@@ -27,7 +30,7 @@ def exerciseA() -> tuple:
     matrix.fill_matrix(A1A, A2A, A3A)
 
     b = [sin(element*(F+1)) for element in range(N)]
-    x = [1 for element in range(N)]
+    x = [0 for element in range(N)]
 
     return matrix, b, x
 
@@ -64,10 +67,62 @@ def exerciseC():
         (x_new_gaus,iterations_gaus, res_gaus, end_gaus - start_gaus, converged_gaus)
 
 def exerciseD():
-    pass
+
+    
+    matrix = Matrix(N)
+    matrix.fill_matrix(A1C, A2C, A3C)
+
+    b = [sin(element*(F+1)) for element in range(N)]
+    x = [1 for element in range(N)]
+
+
+    start = time.time()
+    result, norm = LU_decomposition(matrix, b, x)
+
+    end = time.time()
+
+    return result, norm, end - start
+
 
 def exerciseE():
-    pass
+
+    jacobi_times = []
+    gaus_times = []
+    lu_times = []
+    variables_count = [50, 100, 1000, 2000, 3000]
+
+    for var in variables_count:
+
+        matrix = Matrix(var)
+        matrix.fill_matrix(A1A, A2A, A3A)
+
+        b = [sin(element*(F+1)) for element in range(var)]
+        x = [1 for element in range(var)]
+
+        start = time.time()
+        jacobi_method(matrix, b, x)
+        end = time.time()
+        jacobi_times.append(end - start)
+
+        start = time.time()
+        gauss_seidel_method(matrix, b, x)
+        end = time.time()
+        gaus_times.append(end - start)
+
+
+        start = time.time()
+        LU_decomposition(matrix, b, x)
+        end = time.time()
+        lu_times.append(end - start)
+
+        print(jacobi_times[-1], gaus_times[-1], lu_times[-1])
+
+
+    return jacobi_times, gaus_times, lu_times
+
+
+    
+    
 
 def residual(A: Matrix, b: List[float], x: List[float]) -> List[float]:
     r = A * x
@@ -78,20 +133,64 @@ def residual(A: Matrix, b: List[float], x: List[float]) -> List[float]:
     return r
 
 def euclidean_norm(v: List[float]) -> float:
-    n = 0
+    sigma = 0
     
     was_calculated = True
 
     try:
         for element in v:
-            n += element ** 2
+            sigma += element ** 2
 
     except OverflowError:
         was_calculated = False
 
 
 
-    return sqrt(n), was_calculated
+    return sqrt(sigma), was_calculated
+
+
+def LU_decomposition(A : Matrix, b : list, x : list):
+    U = copy.deepcopy(A)
+    L = Matrix(A.size)
+    L.fill_identity()
+    n = U.size
+    x_new = x[:]
+    
+    for i in range(2, n+1):
+        for j in range(1,i):
+            L.matrix[i-1][j-1] = U.matrix[i-1][j-1] / U.matrix[j-1][j-1]
+            
+            for l in range(n):
+                U.matrix[i-1][l] = U.matrix[i-1][l] - L.matrix[i-1][j-1] * U.matrix[j-1][l]
+
+
+    y = [0 for element in range(n)]
+
+
+    for i in range(n):
+        sigma = 0
+        
+        for j in range(i):
+            sigma += L.matrix[i][j] * y[j]
+
+        y[i] = (b[i] - sigma) / L.matrix[i][i]
+
+    for i in range(n - 1, -1, -1):
+        sigma = 0
+        
+        for j in range(i + 1, n):
+            sigma += U.matrix[i][j] * x_new[j]
+
+        x_new[i] = (y[i] - sigma) / U.matrix[i][i]
+
+    res = residual(A, b, x_new)
+
+    norm, was_calculated = euclidean_norm(res)
+
+    x_new = [round(x, 10) for x in x_new]
+
+    return x_new, norm
+
 
 def jacobi_method(A : Matrix, b : list, x : list) -> tuple:
     n = len(b)
@@ -129,8 +228,6 @@ def jacobi_method(A : Matrix, b : list, x : list) -> tuple:
 
     iterations = [i for i in range(iterations)]
     return x_new, iterations, norm_array, converged   
-
-
 
 def gauss_seidel_method(A : Matrix, b : list, x : list) -> tuple:
     n = len(b)
@@ -198,16 +295,28 @@ def plot_jacobi_gaus(jacobi : tuple , gaus : tuple):
     plt.tight_layout()
     plt.show()
 
+def plot_times(jacobi, gaus, lu):
+    pass
+
 
 def show_results(info):
-    result, iterations, residual_norm, time, converged, name = info
+
+    if info[-1] == "LU":
+        residual_norm, time, name = info
+        print("Results for {}: ".format(name))
+        print("Residual Norm: {}".format(residual_norm))
+        print("Time Taken: {} seconds".format(time))
+        return
+    
+
+
+    iterations, residual_norm, time, converged, name = info
 
     iterations = len(iterations)
     result = result[-1]
     residual_norm = residual_norm[-1]
 
     print("Results for {}: ".format(name))
-    print("Result: {}".format(result))
     print("Iterations: {}".format(iterations))
     print("Residual Norm: {}".format(residual_norm))
     print("Time Taken: {} seconds".format(time))

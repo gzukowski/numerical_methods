@@ -16,6 +16,11 @@ class Matrix:
                 elif j == i - 2 or j == i + 2:
                     self.matrix[i][j] = a3
 
+    def fill_identity(self):
+        N = self.size
+        for i in range(N):
+            self.matrix[i][i] = 1
+            
     def __mul__(self, v : List[float]) -> List[float]:
         if len(v) != self.size:
             raise ValueError("Vector size must match matrix size")
