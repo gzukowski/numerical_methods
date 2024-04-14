@@ -295,11 +295,23 @@ def plot_jacobi_gaus(jacobi : tuple , gaus : tuple):
     plt.tight_layout()
     plt.show()
 
-def plot_times(jacobi, gaus, lu):
-    pass
+def plot_times(jacobi : List[float], gaus : List[float], lu : List[float]) -> None:
+    variables_count = [50, 100, 1000, 2000, 3000]
+    
+    plt.figure(figsize=(10, 5))
+    plt.plot(variables_count, jacobi, label='Jacobi')
+    plt.plot(variables_count, gaus, label='Gauss-Seidel')
+    plt.plot(variables_count, lu, label='Faktoryzacja LU')
+    
+    plt.xlabel('Rozmiar')
+    plt.ylabel('Czas(s)')
+    plt.title('Porównanie czasów wykonania')
+    
+    plt.legend()
+    plt.show()
 
 
-def show_results(info):
+def show_results(info : tuple) -> None:
 
     if info[-1] == "LU":
         residual_norm, time, name = info
