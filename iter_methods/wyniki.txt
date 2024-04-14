@@ -1,0 +1,27 @@
+Results for Jacobi: 
+Result: -0.14768476363626
+Iterations: 62
+Residual Norm: 7.48220434252924e-10
+Time Taken: 21.315128326416016 seconds
+Converged: True
+
+Results for Gaus Seidel:
+Result: -0.14768476363732205
+Iterations: 36
+Residual Norm: 8.970721867959548e-10
+Time Taken: 13.637560367584229 seconds
+Converged: True
+
+Results for Jacobi: 
+Result: 1.9142306728721216e+123
+Iterations: 1000
+Residual Norm: 2.5651350076201824e+126
+Time Taken: 358.25476479530334 seconds
+Converged: False
+
+Results for Gaus Seidel:
+Result: 1.1941329229029629e+154
+Iterations: 512
+Residual Norm: inf
+Time Taken: 170.97607016563416 seconds
+Converged: False
