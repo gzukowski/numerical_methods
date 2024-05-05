@@ -1,5 +1,4 @@
 from methods import exerciseA, exerciseB, exerciseC, exerciseD, exerciseE, plot_jacobi_gaus, plot_times, show_results
-import numpy as np
 
 
 
@@ -17,36 +16,36 @@ def main():
 
     result_gaus, iterations_gaus, residual_norm_gaus, time_gaus, converged_gaus = exB_result[1]
 
-    show_results((result_jac, iterations_jac, residual_norm_jac, time_jac, converged_jac, "Jacobi"))
-    show_results((result_gaus, iterations_gaus, residual_norm_gaus, time_gaus, converged_gaus, "Gaus Seidel"))
-
-    plot_jacobi_gaus((iterations_jac, residual_norm_jac), (iterations_gaus, residual_norm_gaus))
-
-    
-    # EXERCISE C
-    exC_result = exerciseC()
-
-    result_jac, iterations_jac, residual_norm_jac, time_jac, converged_jac = exC_result[0]
-
-    result_gaus, iterations_gaus, residual_norm_gaus, time_gaus, converged_gaus = exC_result[1]
-
-
     show_results((iterations_jac, residual_norm_jac, time_jac, converged_jac, "Jacobi"))
     show_results((iterations_gaus, residual_norm_gaus, time_gaus, converged_gaus, "Gaus Seidel"))
 
     plot_jacobi_gaus((iterations_jac, residual_norm_jac), (iterations_gaus, residual_norm_gaus))
 
+    
+    # # EXERCISE C
+    # exC_result = exerciseC()
 
-    # EXERCISE D
-    result_lu, norm_lu, time_taken  = exerciseD()
+    # result_jac, iterations_jac, residual_norm_jac, time_jac, converged_jac = exC_result[0]
 
-    show_results((norm_lu, time_taken, "LU"))
+    # result_gaus, iterations_gaus, residual_norm_gaus, time_gaus, converged_gaus = exC_result[1]
 
 
-    # EXERCISE E
-    jacobi, gaus, lu  = exerciseE()
+    # show_results((iterations_jac, residual_norm_jac, time_jac, converged_jac, "Jacobi"))
+    # show_results((iterations_gaus, residual_norm_gaus, time_gaus, converged_gaus, "Gaus Seidel"))
 
-    plot_times(jacobi, gaus, lu)
+    # plot_jacobi_gaus((iterations_jac, residual_norm_jac), (iterations_gaus, residual_norm_gaus))
+
+
+    # # EXERCISE D
+    # result_lu, norm_lu, time_taken  = exerciseD()
+
+    # show_results((norm_lu, time_taken, "LU"))
+
+
+    # # EXERCISE E
+    # jacobi, gaus, lu  = exerciseE()
+
+    # plot_times(jacobi, gaus, lu)
 
 
 

@@ -4,16 +4,16 @@ from typing import List
 import time
 import matplotlib.pyplot as plt
 import copy
-import numpy as np
-import scipy.linalg as la
+#import numpy as np
+#import scipy.linalg as la
 
 
 INDEX = 193184
-N = 984
+N = 969#984
 
 E = 1
 F = 3
-A1A = 5 + E
+A1A = 4 + E#5 + E
 A2A = -1
 A3A = -1
 
@@ -325,7 +325,7 @@ def show_results(info : tuple) -> None:
     iterations, residual_norm, time, converged, name = info
 
     iterations = len(iterations)
-    result = result[-1]
+    #result = result[-1]
     residual_norm = residual_norm[-1]
 
     print("Results for {}: ".format(name))
