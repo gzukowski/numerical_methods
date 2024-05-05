@@ -7,21 +7,20 @@ function [matrix_condition_numbers, max_coefficients_difference_1, max_coefficie
 %       gdy b zawiera zaburzone wartości funkcji liniowej
 
 N = 5:40;
-N
 %% chart 1
 matrix_condition_numbers = zeros(1, length(N));
+figure
 subplot(3,1,1);
+%hold on;
 
-title('Wzrost współczynnika uwarunkowania macierzy Vandermonde');
-xlabel('wspolczynnik');
-ylabel('rozmiar');
-hold on;
 for i = 1:length(N)
-    N(i)
     V = vandermonde_matrix(N(i));
     matrix_condition_numbers(i) = cond(V);
 end
-semilogy(N, matrix_condition_numbers, '-');
+semilogy(N, matrix_condition_numbers, 'DisplayName', 'cond(V)');
+title('Wzrost współczynnika uwarunkowania macierzy Vandermonde');
+xlabel('wspolczynnik');
+ylabel('rozmiar');
 hold off;
 
 
@@ -71,25 +70,17 @@ for i = 1:length(N)
 end
 plot(N, max_coefficients_difference_2, '-');
 hold off;
-
+print('zadanie3','-dpng')
 end
 
 
 function V = vandermonde_matrix(N)
-     % Generuje macierz Vandermonde dla N równomiernie rozmieszczonych w przedziale [-1, 1] węzłów interpolacji
-    x_coarse = linspace(-1,1,N);
+    x_coarse = linspace(0,1,N);
 
     V = zeros(N, N);
-    
-
+   
     for i = 1:N
         V(:, i) = x_coarse.^(i-1);
     end
-    %for j = 1:N
-    %   for i = 1:N
-    %        V(i, j) = x_coarse(i)^(N-j);
-    %    end
-    %end
 
-    V
 end

@@ -57,6 +57,8 @@ function [nodes_Chebyshev, V, V2, original_Runge, interpolated_Runge, interpolat
     legend show;
     hold off
 
+    print('zadanie2','-dpng')
+
 end
 
 function V = vandermonde_matrix_chebyshev(N, x_coarse)
