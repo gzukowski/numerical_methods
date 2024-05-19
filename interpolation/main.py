@@ -13,6 +13,7 @@ if __name__ == "__main__":
       a = Matrix(5, 3)
 
       points = prepare_data(DIR_PATH + FILE)
-      interpolated, nodes = interpolation(points)
+      interpolated, nodes = interpolation(points, mode=SPLINES)
+      #interpolated, nodes = interpolation(points)
 
       plot_data(points, interpolated, nodes, FILE)

@@ -2,15 +2,17 @@ import csv
 from utils.Matrix import *
 from utils.Pair import Pair
 import os
+import math
 import matplotlib.pyplot as plt
 
 INTERPOLATING_NUM = 1000
 
-NODES_NUM = 5
+NODES_NUM = 30
 
 LAGRANGE = 1
 SPLINES = 0
 N = 512
+PI = 3.14
 
 
 
@@ -84,6 +86,9 @@ def interpolation(points : list[Pair], mode=LAGRANGE):
     nodes = linspace(0, N-1, NODES_NUM)
     nodes = [int(node) for node in nodes]
 
+    #nodes = generate_chebysev(NODES_NUM)
+
+
     if mode == LAGRANGE:
         results = [lagrange_polynomial(points, element, nodes) for element in linspace(points[0].x, points[-1].x - 1, INTERPOLATING_NUM)]
 
@@ -107,15 +112,12 @@ def plot_data(data : list, interpolated : list, nodes : list, title : str):
     plt.figure(figsize=(10, 6))
 
     plt.plot(x_coords, y_coords, '-', label='Data Points')
-   
     plt.plot(interpolated_x_coords, interpolated_y_coords, '-', label='Interpolated Points', c='g')
     plt.scatter(nodes_X, nodes_Y, c='g')
-    # Create the plot
-    
-      # 'o-' plots points with lines connecting them
-    plt.xlabel('X')
-    plt.ylabel('Y')
-    plt.title(title)
+
+    plt.xlabel('distance(m)')
+    plt.ylabel('height(m)')
+    plt.title(f"{title}\nNodes: {NODES_NUM}")
     plt.legend()
     plt.grid(True)
     plt.show()
@@ -129,6 +131,17 @@ def linspace(start, stop, n):
         result[i] = start + h * i
     
     return result
+
+def generate_chebysev(n):
+
+    def fu(k):
+        return ((math.cos((k*PI) / (n - 1)) + 1) / 2) * (N-1)
+    
+    results = [int(fu(k)) for k in range(n)]
+    results = results[::-1]
+    
+    return  results
+
 
 def prepare_data(path : str):
 
