@@ -1,15 +1,14 @@
-from matrix import Matrix
+from utils.Matrix import Matrix
 from methods import prepare_data, plot_data, interpolation
 
-
-DATA_SOURCE = "2018_paths/przyk3.txt"
+LAGRANGE = 1
+SPLINES = 0
+DATA_SOURCE = "2018_paths/WielkiKanionKolorado.csv"
 
 if __name__ == "__main__":
       a = Matrix(5, 3)
 
       points = prepare_data(DATA_SOURCE)
-      interpolated = interpolation(points)
+      interpolated, nodes = interpolation(points, mode=SPLINES)
 
-      print(interpolated)
-
-      plot_data(points, interpolated)
+      plot_data(points, interpolated, nodes)
