@@ -4,13 +4,15 @@ from utils.Pair import Pair
 import os
 import matplotlib.pyplot as plt
 
+INTERPOLATING_NUM = 1000
+
+NODES_NUM = 5
+
 LAGRANGE = 1
 SPLINES = 0
 N = 512
 
-INTERPOLATING_NUM = 1000
 
-NODES_NUM = 20
 
 def lagrange_polynomial(points : list[Pair], x : float, nodes : list):
     nodes = [int(node) for node in nodes]
@@ -92,7 +94,7 @@ def interpolation(points : list[Pair], mode=LAGRANGE):
     return results, nodes 
 
 
-def plot_data(data : list, interpolated : list, nodes : list):
+def plot_data(data : list, interpolated : list, nodes : list, title : str):
     x_coords = [pair.x for pair in data]
     y_coords = [pair.y for pair in data]
 
@@ -113,7 +115,7 @@ def plot_data(data : list, interpolated : list, nodes : list):
       # 'o-' plots points with lines connecting them
     plt.xlabel('X')
     plt.ylabel('Y')
-    plt.title('Function Plot from Points')
+    plt.title(title)
     plt.legend()
     plt.grid(True)
     plt.show()
@@ -135,12 +137,15 @@ def prepare_data(path : str):
         file = open(path, "r")
         index = 0
         for line in file:
-            point = line.strip().split()
+            point = line.strip().split(" ")
+            try:
+                x = float(point[0])
+                y = float(point[1])
+                pairs[index] = Pair(x, y)
+                index += 1
+            except ValueError:
+                continue
 
-            x = float(point[0])
-            y = float(point[1])
-            pairs[index] = Pair(x, y)
-            index += 1
 
     if ".csv" in path:
         with open(path, "r") as file:
