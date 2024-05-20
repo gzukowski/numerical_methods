@@ -53,7 +53,6 @@ def splines(points : list[Pair], nodes : list):
     A = Matrix(n, n)
     vec = Matrix(n, 1)
 
-
     for i in range(1, n-1):
         A.matrix[i][i] = 2 * (h[i-1] + h[i])
         A.matrix[i][i-1] = h[i-1]
