@@ -30,11 +30,24 @@ def lagrange_polynomial(points : list[Pair], x : float, nodes : list):
     return Pair(x, result)
 
 
+def splines_y(points: list[Pair], x : float, nodes : list, abcd : tuple):
+    n  = len(nodes)
+    a, b, c, d = abcd
+
+    index = n-1
+    for ix_num in range(len(nodes) - 1):
+        if points[nodes[ix_num]].x <= x < points[nodes[ix_num + 1]].x:
+            index = ix_num
+            break
+
+    h = x-points[nodes[index]].x
+    return a[index] + b[index] * h + c[index] * h**2 + d[index] * h ** 3
+
 def splines(points : list[Pair], nodes : list):
     n = len(nodes)
-    a = [points[ix].y for ix in nodes]
-    b = []
-    d = []
+    a = [points[node].y for node in nodes]
+    b = [0 for _ in range(n-1)]
+    d = [0 for _ in range(n-1)]
     h = [points[nodes[i+1]].x - points[nodes[i]].x for i in range(n-1)]
 
     A = Matrix(n, n)
@@ -56,27 +69,15 @@ def splines(points : list[Pair], nodes : list):
 
 
     for i in range(n-1):
-        d.append((c[i+1] - c[i])/(3 * h[i]))
-        b.append((points[nodes[i+1]].y - points[nodes[i]].y)/h[i] - h[i]/3 * (2 * c[i] + c[i+1]))
+        d[i] = ((c[i+1] - c[i])/(3 * h[i]))
+        b[i] = ((points[nodes[i+1]].y - points[nodes[i]].y)/h[i] - h[i]/3 * (2 * c[i] + c[i+1]))
 
     b.append(0)
     d.append(0)
 
-
-    def F(x):
-        ix = n-1
-        for ix_num in range(len(nodes) - 1):
-            if points[nodes[ix_num]].x <= x < points[nodes[ix_num + 1]].x:
-                ix = ix_num
-                break
-
-        h = x-points[nodes[ix]].x
-        return a[ix] + b[ix] * h + c[ix] * h**2 + d[ix] * h ** 3
-
     interpolated_X = list(linspace(points[0].x, points[-1].x, INTERPOLATING_NUM))
 
-
-    results = [Pair(x, F(x)) for x in interpolated_X]
+    results = [Pair(x, splines_y(points, x, nodes, (a,b,c,d))) for x in interpolated_X]
 
     return results
 
@@ -87,7 +88,6 @@ def interpolation(points : list[Pair], mode=LAGRANGE):
     nodes = [int(node) for node in nodes]
 
     #nodes = generate_chebysev(NODES_NUM)
-
 
     if mode == LAGRANGE:
         results = [lagrange_polynomial(points, element, nodes) for element in linspace(points[0].x, points[-1].x - 1, INTERPOLATING_NUM)]
@@ -133,13 +133,12 @@ def linspace(start, stop, n):
     return result
 
 def generate_chebysev(n):
+    results = [0 for _ in range(n)]
 
-    def fu(k):
-        return ((math.cos((k*PI) / (n - 1)) + 1) / 2) * (N-1)
-    
-    results = [int(fu(k)) for k in range(n)]
+    for k in range(n):
+        results[k] = int(((math.cos((k*PI) / (n - 1)) + 1) / 2) * (N-1))
+
     results = results[::-1]
-    
     return  results
 
 
