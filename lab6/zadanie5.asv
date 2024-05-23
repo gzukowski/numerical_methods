@@ -28,20 +28,20 @@ function [country, source, degrees, x_coarse, x_fine, y_original, y_yearly, y_ap
         disp(N);
 
         mse = zeros(N, 1);
-        msek = zeros(N-1, 1);
+        msek = zeros(kmax-1, 1);
        
-        y_approximation = cell(1, N);
+        y_approximation = cell(1, kmax);
 
         disp(mat2str(size(y_approximation)));
 
-        for i = 1:N
-            X = dct2_custom(y_yearly, N);
+        for i = 1:kmax
+            X = dct2_custom(y_yearly, kmax);
             y_approximation{i} = idct2_custom(X, i, N, P);
             y_approx_coarse = idct2_custom(X, i, N, N);
             mse(i) = calcMSE(y_yearly, y_approx_coarse);
         end
 
-        for i = 1:N-1
+        for i = 1:kmax-1
             msek(i) = calcMSE(y_approximation{i}, y_approximation{i+1});
         end
 
@@ -67,7 +67,7 @@ function [country, source, degrees, x_coarse, x_fine, y_original, y_yearly, y_ap
 
 
         subplot(3, 1, 2);
-        semilogy(1:N, mse, '-');
+        semilogy(1:kmax, mse, '-');
         title('Mean Squared Error for Different Cosine Approximation Degrees');
         xlabel('Cosine Approximation Degree');
         ylabel('Mean Squared Error');
@@ -75,7 +75,7 @@ function [country, source, degrees, x_coarse, x_fine, y_original, y_yearly, y_ap
 
 
         subplot(3, 1, 3);
-        semilogy(1:N-1, msek, '-');
+        semilogy(1:kmax-1, msek, '-');
         title('Convergence of Cosine Approximations');
         xlabel('Cosine Approximation Degree');
         ylabel('Difference Error');
