@@ -66,31 +66,31 @@ if isfield(energy, country) && isfield(energy.(country), source)
         figure;
 
         subplot(3, 1, 1);
-        plot(x_coarse, y_yearly, 'k', 'DisplayName', 'Yearly Data', 'LineWidth', 1.5);
+        plot(x_coarse, y_yearly, 'k', 'DisplayName', 'Roczne dane', 'LineWidth', 1.5);
         hold on;
         colors = ['r', 'g', 'b', 'm'];
         for i = 1:length(degrees)
-            plot(x_fine, y_approximation{degrees(i)}, colors(i), 'DisplayName', sprintf('Degree %d', degrees(i)));
+            plot(x_fine, y_approximation{degrees(i)}, colors(i), 'DisplayName', sprintf('stopień %d', degrees(i)));
         end
         hold off;
-        title('Yearly Energy Production Approximation');
-        xlabel('Normalized Time');
-        ylabel('Yearly Energy Production');
+        title('Aproksymacja rocznej produkcji');
+        xlabel('Czas');
+        ylabel('Roczna produkcja energii');
         legend('show');
         grid on;
 
         subplot(3, 1, 2);
         semilogy(1:N-1, mse, '-');
-        title('Mean Squared Error for Different Polynomial Degrees');
-        xlabel('Polynomial Degree');
-        ylabel('Mean Squared Error');
+        title('Błąd średniokwadratowy');
+        xlabel('Stopień');
+        ylabel('Średni błąd');
         grid on;
 
         subplot(3, 1, 3);
         semilogy(1:N-2, msek, '-');
-        title('Convergence of Polynomial Approximations');
-        xlabel('Polynomial Degree');
-        ylabel('Difference Error');
+        title('Zbieżność dla stopni aproksymacji');
+        xlabel('stopień');
+        ylabel('różnica błędu');
         grid on;
 
         print -dpng 'zadanie4.png';

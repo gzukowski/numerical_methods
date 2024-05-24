@@ -50,7 +50,7 @@ function [country, source, degrees, x_coarse, x_fine, y_original, y_yearly, y_ap
 
         % roczne i aproksymacja
         subplot(3, 1, 1);
-        plot(x_coarse, y_yearly, 'k', 'DisplayName', 'Yearly Data', 'LineWidth', 1.5);
+        plot(x_coarse, y_yearly, 'k', 'DisplayName', 'Roczne dane', 'LineWidth', 1.5);
         hold on;
         colors = ['r', 'g', 'b', 'm'];
         for i = 1:length(degrees)
@@ -59,32 +59,32 @@ function [country, source, degrees, x_coarse, x_fine, y_original, y_yearly, y_ap
             end
         end
         hold off;
-        title('Yearly Energy Production Approximation');
-        xlabel('Normalized Time');
-        ylabel('Yearly Energy Production');
+        title('Aproksymacja rocznej produkcji');
+        xlabel('Czas');
+        ylabel('Roczna produkcja energii');
         legend('show');
         grid on;
 
 
         subplot(3, 1, 2);
         semilogy(1:N, mse, '-');
-        title('Mean Squared Error for Different Cosine Approximation Degrees');
-        xlabel('Cosine Approximation Degree');
-        ylabel('Mean Squared Error');
+        title('Błąd średniokwadratgowy dla różnych stopni aproksymacji cosinusa');
+        xlabel('Stopień');
+        ylabel('Błąd średniokwadratowy');
         grid on;
 
 
         subplot(3, 1, 3);
         semilogy(1:N-1, msek, '-');
-        title('Convergence of Cosine Approximations');
-        xlabel('Cosine Approximation Degree');
-        ylabel('Difference Error');
+        title('Zbieżność dla stopni aproksymacji');
+        xlabel('stopień');
+        ylabel('różnica błędu');
         grid on;
 
         print -dpng 'zadanie5.png';
 
     else
-        disp(['Data for (country=', country, ') and (source=', source, ') is not available.']);
+        disp(['Dane dla (country=', country, ') oraz (source=', source, ') nie są dostępne.']);
     end
 
     disp(mat2str(size(y_approximation)));

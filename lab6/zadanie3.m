@@ -51,25 +51,25 @@ function [country, source, degrees, x_coarse, x_fine, y_original, y_yearly, y_ap
         figure;
 
         subplot(2, 1, 1);
-        plot(x_coarse, y_yearly, 'k', 'DisplayName', 'Yearly Data', 'LineWidth', 1.5); % Zmieniono z 'ko' na 'k'
+        plot(x_coarse, y_yearly, 'k', 'DisplayName', 'Roczne dane', 'LineWidth', 1.5); % Zmieniono z 'ko' na 'k'
         hold on;
         colors = ['r', 'g', 'b', 'm'];
         for i = 1:length(degrees)
-            plot(x_fine, y_approximation{i}, colors(i), 'DisplayName', sprintf('Degree %d', degrees(i)));
+            plot(x_fine, y_approximation{i}, colors(i), 'DisplayName', sprintf('stopień %d', degrees(i)));
         end
         hold off;
-        title('Yearly Energy Production Approximation');
-        xlabel('Normalized Time');
-        ylabel('Yearly Energy Production');
+        title('Aproksymacja rocznej produkcji');
+        xlabel('Czas');
+        ylabel('Roczna produkcja energii');
         legend('show');
         grid on;
 
         subplot(2, 1, 2);
         bar(mse);
         set(gca, 'XTickLabel', degrees);
-        title('Mean Squared Error for Different Polynomial Degrees');
-        xlabel('Polynomial Degree');
-        ylabel('Mean Squared Error');
+        title('Błąd średniokwadratowy');
+        xlabel('Stopień');
+        ylabel('Średni błąd');
         grid on;
 
 

@@ -37,25 +37,25 @@ if isfield(energy, country) && isfield(energy.(country), source)
     figure;
 
         subplot(2, 1, 1);
-        plot(dates, y_original, 'k', 'DisplayName', 'Original Data', 'LineWidth', 1.5);
+        plot(dates, y_original, 'k', 'DisplayName', 'Wzorcowa', 'LineWidth', 1.5);
         hold on;
         colors = ['r', 'g', 'b', 'm'];
         for i = 1:length(degrees)
-            plot(dates, y_approximation{i}, colors(i), 'DisplayName', sprintf('Degree %d', degrees(i)));
+            plot(dates, y_approximation{i}, colors(i), 'DisplayName', sprintf('Stopien %d', degrees(i)));
         end
         hold off;
-        title('Energy Production Approximation');
-        xlabel('Date');
-        ylabel('Energy Production');
+        title('Aproksymacja produkcji energii');
+        xlabel('data');
+        ylabel('produkcja');
         legend('show');
         grid on;
 
         subplot(2, 1, 2);
         bar(mse);
         set(gca, 'XTickLabel', degrees);
-        title('Mean Squared Error for Different Polynomial Degrees');
-        xlabel('Polynomial Degree');
-        ylabel('Mean Squared Error');
+        title('Błąd średniokwadratowy');
+        xlabel('Stopień');
+        ylabel('Średni błąd');
         grid on;
 
         print -dpng zadanie1.png 
